@@ -19,36 +19,36 @@ import org.springframework.security.web.SecurityFilterChain;
 @EnableMethodSecurity(securedEnabled = true)
 public class SecurityConfig {
 
-    @Bean
-    public UserDetailsService userDetailsService(PasswordEncoder encoder) {
-
-        UserDetails user = User.builder()
-                .username("user")
-                .password(encoder.encode("password"))
-                .roles("USER")
-                .build();
-
-        UserDetails admin = User.builder()
-                .username("admin")
-                .password(encoder.encode("password"))
-                .roles("USER", "ADMIN")
-                .build();
-
-        UserDetails moderator = User.builder()
-                .username("moderator")
-                .password(encoder.encode("password"))
-                .roles("MODERATOR", "USER")
-                .build();
-
-        UserDetails superAdmin = User.builder()
-                .username("superadmin")
-                .password(encoder.encode("password"))
-                .roles("SUPERADMIN")
-                .build();
-
-
-        return new InMemoryUserDetailsManager(user, moderator, admin, superAdmin);
-    }
+//    @Bean
+//    public UserDetailsService userDetailsService(PasswordEncoder encoder) {
+//
+//        UserDetails user = User.builder()
+//                .username("user")
+//                .password(encoder.encode("password"))
+//                .roles("USER")
+//                .build();
+//
+//        UserDetails admin = User.builder()
+//                .username("admin")
+//                .password(encoder.encode("password"))
+//                .roles("USER", "ADMIN")
+//                .build();
+//
+//        UserDetails moderator = User.builder()
+//                .username("moderator")
+//                .password(encoder.encode("password"))
+//                .roles("MODERATOR", "USER")
+//                .build();
+//
+//        UserDetails superAdmin = User.builder()
+//                .username("superadmin")
+//                .password(encoder.encode("password"))
+//                .roles("SUPERADMIN")
+//                .build();
+//
+//
+//        return new InMemoryUserDetailsManager(user, moderator, admin, superAdmin);
+//    }
 
 
     @Bean

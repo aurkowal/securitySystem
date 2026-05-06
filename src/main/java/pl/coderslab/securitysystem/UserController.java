@@ -12,9 +12,11 @@ import java.util.List;
 public class UserController {
 
     private final UserService userService;
+    private final UserServiceInterface userServiceInterface;
 
-    public UserController(UserService userService) {
+    public UserController(UserService userService, UserServiceInterface userServiceInterface) {
         this.userService = userService;
+        this.userServiceInterface = userServiceInterface;
     }
 
     @GetMapping("/user/admins")
@@ -22,5 +24,36 @@ public class UserController {
     public List<String> showSuperAdminInfo() {
         return userService.getAdmins();
     }
+
+    @GetMapping("/create-user")
+    public String createUser() {
+        User user = new User();
+        user.setUsername("user");
+        user.setPassword("password");
+        userServiceInterface.saveUser(user);
+        return "user created";
+    }
+
+    @GetMapping("/create-admin")
+    public String createAdmin() {
+        User admin = new User();
+        admin.setUsername("admin");
+        admin.setPassword("password");
+        userServiceInterface.saveAdmin(admin);
+        return "admin created";
+    }
+
+
+    @GetMapping("/admin")
+    public String adminPanel() {
+        return "Witaj w panelu admina";
+    }
+
+    @GetMapping("/user")
+    public String userPanel() {
+        return "Witaj w panelu uzytkownika";
+    }
+
+
 
 }
