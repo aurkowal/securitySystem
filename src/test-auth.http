@@ -1,0 +1,19 @@
+
+### ================================
+### AUTORYZACJA (LOGIN)
+### ================================
+POST http://localhost:8080/api/v1/auth/authenticate
+Content-Type: application/json
+
+{
+  "username": "user",
+  "password": "password"
+}
+
+###
+
+### ================================
+### ENDPOINT CHRONIONY (JWT)
+### ================================
+GET http://localhost:8080/api/v1/test/secured
+Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ1c2VyIiwiaWF0IjoxNzc4MTUzMjY0LCJleHAiOjE3NzgxNTQxNjR9.i-_1B42kgimNYS4UklnQGrM_P3bGnkc7aqWEuP-zpjc
