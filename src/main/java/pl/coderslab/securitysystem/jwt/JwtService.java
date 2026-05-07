@@ -18,6 +18,7 @@ import java.util.function.Function;
 public class JwtService {
     private static final String SECRET_KEY = "IdVrZuBdCVQNzJ5TOSEZIXnLYzqnIbtIm2QXjcqzXYHFdcm+Qa3qVXTd2qJc2C4tGKWWj9lc2JlrqoOPHpUEtg==";
     private static final int EXPIRATION_TIME = 900000;
+    private static final int EXPIRATION_REFRESH_TIME = 86400000;
 
     //Metoda ta ekstrahuje nazwę użytkownika z tokena JWT. Nazwa użytkownika jest często przechowywana w polu subject tokena.
     public String extractUserName(String token) {
@@ -26,8 +27,13 @@ public class JwtService {
 
     //Generuje token JWT dla podanych szczegółów użytkownika. Metoda ta jest przeciążona, aby umożliwić dodawanie dodatkowych roszczeń do tokena.
     public String generateToken(UserDetails userDetails) {
-        return generateToken1(new HashMap<>(), userDetails);
+        return generateToken1(new HashMap<>(), userDetails, EXPIRATION_TIME);
     }
+
+    public String generateRefreshToken(UserDetails userDetails) {
+        return generateToken1(new HashMap<>(), userDetails, EXPIRATION_REFRESH_TIME);
+    }
+
 
     //Sprawdza, czy token jest ważny i nie wygasł, porównując nazwę użytkownika z tokena z nazwą użytkownika z UserDetails.
     public boolean isTokenValidAndNotExpired(String token, UserDetails userDetails) {
@@ -48,16 +54,17 @@ public class JwtService {
         return getClaim(token, Claims::getExpiration);
     }
 
-    public String generateToken1(Map<String, Object> extraClaims, UserDetails userDetails) {
+    public String generateToken1(Map<String, Object> extraClaims, UserDetails userDetails, long expiration) {
         return Jwts
                 .builder()
                 .setClaims(extraClaims)
                 .setSubject(userDetails.getUsername())
                 .setIssuedAt(new Date(System.currentTimeMillis()))
-                .setExpiration(new Date(System.currentTimeMillis() + EXPIRATION_TIME))
+                .setExpiration(new Date(System.currentTimeMillis() + expiration))
                 .signWith(getKey(), SignatureAlgorithm.HS256)
                 .compact();
     }
+
 
     //Metoda pomocnicza do ekstrakcji roszczeń z tokena JWT. Używa funkcji claimsResolver do określenia, które roszczenie ma być zwrócone.
     public <T> T getClaim(String token, Function<Claims, T> claimsResolver) {
@@ -80,6 +87,8 @@ public class JwtService {
         byte[] keyBytes = Decoders.BASE64.decode(SECRET_KEY);
         return Keys.hmacShaKeyFor(keyBytes);
     }
+
+
 
 
 }

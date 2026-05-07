@@ -10,10 +10,29 @@ Content-Type: application/json
   "password": "password"
 }
 
+
+> {%
+    client.global.set("access_token", response.body.access_token);
+    client.global.set("refresh_token", response.body.refresh_token);
+%}
+
+
+
 ###
 
 ### ================================
 ### ENDPOINT CHRONIONY (JWT)
 ### ================================
 GET http://localhost:8080/api/v1/test/secured
-Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ1c2VyIiwiaWF0IjoxNzc4MTUzMjY0LCJleHAiOjE3NzgxNTQxNjR9.i-_1B42kgimNYS4UklnQGrM_P3bGnkc7aqWEuP-zpjc
+Authorization: Bearer {{access_token}}
+
+### Refresh token
+POST http://localhost:8080/api/v1/auth/refresh-token
+Authorization: Bearer {{refresh_token}}
+
+
+### ==============================
+### WYLOGOWANIE
+### ==============================
+POST http://localhost:8080/api/v1/auth/logout
+Authorization: Bearer {{access_token}}
