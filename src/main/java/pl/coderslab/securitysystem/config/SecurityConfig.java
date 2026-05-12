@@ -18,11 +18,11 @@ import static org.springframework.security.config.http.SessionCreationPolicy.STA
 
 @Configuration
 @EnableWebSecurity
-@EnableMethodSecurity
+@EnableMethodSecurity(securedEnabled = true)
 @RequiredArgsConstructor
 public class SecurityConfig {
 
-    private static final String[] ALLOWED_LIST_URL = {"/api/v1/auth/**", "/about"};
+    private static final String[] ALLOWED_LIST_URL = {"/api/v1/auth/**", "/about","/all-users"};
 
 
     private final JwtAuthenticationFilter jwtAuthenticationFilter;
